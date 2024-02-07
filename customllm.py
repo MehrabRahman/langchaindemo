@@ -1,9 +1,12 @@
+import requests
 from typing import Any, List, Mapping, Optional
 
 from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
 
 class CustomLLM(LLM):
+
+    #n: int
 
     @property
     def _llm_type(self) -> str:
@@ -20,9 +23,24 @@ class CustomLLM(LLM):
         #make a API call to model on AWS
         #Retrieve JSON
         #Return string of output
-        return ""
+        payload = {
+            "inputs": prompt,
+            "parameters": { #Try and experiment with the parameters
+                "max_new_tokens": 1024,
+                "temperature": 0.6,
+                "top_p": 0.9,
+                "do_sample": False,
+                "return_full_text": False
+            }
+        }
+        API_TOKEN = "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"
+        API_URL = "https://z8dvl7fzhxxcybd8.eu-west-1.aws.endpoints.huggingface.cloud"
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+        response = requests.post(API_URL, headers=headers, json=payload)
+        #print(response.json())
+        return response.json()[0]["generated_text"]
 
-    @property
-    def _identifying_params(self) -> Mapping[str, Any]:
-        """Get the identifying parameters."""
-        return {"n": self.n}
+    #@property
+    #def _identifying_params(self) -> Mapping[str, Any]:
+        #"""Get the identifying parameters."""
+        #return {"n": self.n}

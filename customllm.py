@@ -33,8 +33,8 @@ class CustomLLM(LLM):
                 "return_full_text": False
             }
         }
-        API_TOKEN = "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"
-        API_URL = "https://z8dvl7fzhxxcybd8.eu-west-1.aws.endpoints.huggingface.cloud"
+        API_TOKEN = ""
+        API_URL = ""
         headers = {"Authorization": f"Bearer {API_TOKEN}"}
         response = requests.post(API_URL, headers=headers, json=payload)
         #print(response.json())

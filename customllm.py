@@ -4,7 +4,20 @@ from typing import Any, List, Mapping, Optional
 
 from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
+from langchain_community.llms import HuggingFaceTextGenInference
 from dotenv import load_dotenv
+
+default_llm = HuggingFaceTextGenInference(
+    inference_server_url=os.getenv("LLM_API"),
+    max_new_tokens=1024,
+    top_p=0.9,
+    server_kwargs={
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {os.getenv('API_TOKEN')}"
+        }
+    }
+)
 
 class CustomLLM(LLM):
     @property

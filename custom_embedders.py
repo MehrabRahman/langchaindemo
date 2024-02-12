@@ -1,5 +1,6 @@
 import os
 import requests
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from chromadb.api.types import (
     Documents,
     EmbeddingFunction
@@ -24,4 +25,9 @@ class CustomChromaEmbedder(EmbeddingFunction):
     
     def embed_query(self, text):
         return self.embed_documents([text])[0]
+    
+default_embedder = HuggingFaceHubEmbeddings(
+    model = os.environ["EMBEDDING_API"],
+    huggingfacehub_api_token=os.environ["API_TOKEN"]
+)
     
